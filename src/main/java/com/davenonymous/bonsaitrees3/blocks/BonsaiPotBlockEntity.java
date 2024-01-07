@@ -552,7 +552,7 @@ public class BonsaiPotBlockEntity extends BaseBlockEntity<BonsaiPotBlockEntity> 
 			return true;
 		}
 
-		if(stack.isEnchanted()) {
+		if(stack.isEnchanted() || stack.getItem() instanceof EnchantedBookItem) {
 			var enchantments = new EnchantmentHelper(stack);
 			if(enchantments.has(Enchantments.SILK_TOUCH)) {
 				return true;
