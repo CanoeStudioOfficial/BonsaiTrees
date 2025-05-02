@@ -1,107 +1,121 @@
 buildscript {
     repositories {
-        jcenter()
-        maven { url = "https://maven.minecraftforge.net" }
+        maven { 
+            // url = 'https://maven.cleanroommc.com'
+            url = 'https://maven.minecraftforge.net'
+        }
+        maven { 
+            url = 'https://repo.spongepowered.org/maven' 
+        }
+	mavenCentral()
     }
     dependencies {
         classpath 'com.anatawa12.forge:ForgeGradle:2.3-1.0.7'
+        if (project.use_mixins.toBoolean()) {
+            classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+        }
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-// 从 build.properties 加载配置
-file("build.properties").withReader {
-    def prop = new Properties()
-    prop.load(it)
-    ext.config = new ConfigSlurper().parse(prop)
+if (project.use_mixins.toBoolean()) {
+    apply plugin: 'org.spongepowered.mixin'
 }
 
-version = "${config.mod.version}"
-group = "org.dave.bonsaitrees"
-archivesBaseName = "bonsaitrees"
+version = project.mod_version
+group = project.maven_group
+archivesBaseName = project.archives_base_name
 
 sourceCompatibility = targetCompatibility = '1.8'
+
 compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
 
+configurations {
+    embed
+    implementation.extendsFrom(embed)
+}
+
 minecraft {
     version = '1.12.2-14.23.5.2847'
-    runDir = "run"
-    mappings = "snapshot_20171003"
+    runDir = 'run'
+    mappings = 'stable_39'
+    def args = []
+    if (project.use_coremod.toBoolean()) {
+        args << '-Dfml.coreMods.load=' + coremod_plugin_class_name
+    }
+    if (project.use_mixins.toBoolean()) {
+        args << '-Dmixin.hotSwap=true'
+        args << '-Dmixin.checks.interfaces=true'
+        args << '-Dmixin.debug.export=true'
+    }
+    clientJvmArgs.addAll(args)
+    serverJvmArgs.addAll(args)
 }
 
 repositories {
-    // Waila
-    maven {
-        name = "Mobius Repo"
-        url = "https://tehnut.info/maven"
+    maven { 
+        url = 'https://maven.cleanroommc.com' 
     }
-
-    // TheOneProbe
     maven {
-        name = "tterrag maven"
-        url = "https://maven.tterrag.com/"
-    }
-
-    // JEI 备用镜像
-    maven {
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
-    }
-
-    // Forestry
-    maven {
-        name = "Forestry"
-        url = "https://maven.ic2.player.to/"
-    }
-
-    // CraftTweaker2
-    maven {
-        name = "CraftTweaker2"
-        url = "https://maven.blamejared.com/"
+        url = 'https://repo.spongepowered.org/maven'
     }
 }
 
 dependencies {
-    // 本地库依赖
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // 或者显式声明（如果只需要特定文件）
-     implementation files(
-         "libs/jei_1.12.2-4.16.1.1013.jar",
-         "libs/forestry_1.12.2-5.8.2.425.jar",
-         "libs/Hwyla-1.8.26-B41_1.12.2.jar",
-         "libs/TheOneProbe-CE-1.12-1.3.2.jar",
-         "libs/CraftTweaker2-API-1.12.2-4.1.20.702.jar"
-     )
-}
-
-// Travis CI 构建配置
-allprojects {
-    if (System.getenv("TRAVIS") != null) {
-        def tag = System.getenv("TRAVIS_TAG")
-        if (tag != null && !tag.isEmpty() && tag.contains("release")) {
-            project.ext.releaseType = "release"
-        } else {
-            version += "-b${System.getenv("TRAVIS_BUILD_NUMBER")}"
-            project.ext.releaseType = "beta"
-        }
+    if (project.use_assetmover.toBoolean()) {
+        compile 'com.cleanroommc:assetmover:2.0'
     }
+    if (project.use_mixins.toBoolean()) {
+        compile 'zone.rong:mixinbooter:7.0'
+    }
+    
 }
 
-// 资源处理
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+sourceSets {
 
+    main {
+        ext.refMap = 'mixins.' + archives_base_name + '.refmap.json'
+    }
+
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property 'version', project.version
+    inputs.property 'mcversion', project.minecraft.version
+    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-        expand 'version': project.version, 'mcversion': project.minecraft.version
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-
+    // copy everything else except the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+    
+    if (project.use_access_transformer.toBoolean()) {
+        rename '(.+_at.cfg)', 'META-INF/$1' // Access Transformers
+    }
+}
+
+jar {
+    manifest {
+        def attribute_map = [:]
+        if (project.use_coremod.toBoolean()) {
+            attribute_map['FMLCorePlugin'] = project.coremod_plugin_class_name
+            if (project.include_mod.toBoolean()) {
+                attribute_map['FMLCorePluginContainsFMLMod'] = true
+                attribute_map['ForceLoadAsMod'] = project.gradle.startParameter.taskNames[0] == "build"
+            }
+        }
+		if (project.use_access_transformer.toBoolean()) {
+            attribute_map['FMLAT'] = project.archives_base_name + '_at.cfg'
+        }
+        attributes(attribute_map)
     }
 }
