@@ -7,20 +7,21 @@ buildscript {
         classpath 'com.anatawa12.forge:ForgeGradle:2.3-1.0.7'
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
-//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
-file "build.properties" withReader {
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+// 从 build.properties 加载配置
+file("build.properties").withReader {
     def prop = new Properties()
     prop.load(it)
-    ext.config = new ConfigSlurper().parse prop
+    ext.config = new ConfigSlurper().parse(prop)
 }
 
 version = "${config.mod.version}"
-group = "org.dave.bonsaitrees" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = "org.dave.bonsaitrees"
 archivesBaseName = "bonsaitrees"
 
-sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
@@ -28,68 +29,59 @@ compileJava {
 minecraft {
     version = '1.12.2-14.23.5.2847'
     runDir = "run"
-
     mappings = "snapshot_20171003"
 }
 
 repositories {
-    maven { // Waila
-        name "Mobius Repo"
-        url "http://tehnut.info/maven"
-    }
-
-    maven { // TheOneProbe
-        name 'tterrag maven'
-        url "http://maven.tterrag.com/"
-    }
-
-    /*
+    // Waila
     maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
+        name = "Mobius Repo"
+        url = "https://tehnut.info/maven"
     }
-    */
 
+    // TheOneProbe
     maven {
-        // location of a maven mirror for JEI files, as a fallback
+        name = "tterrag maven"
+        url = "https://maven.tterrag.com/"
+    }
+
+    // JEI 备用镜像
+    maven {
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
     }
 
+    // Forestry
     maven {
         name = "Forestry"
-        url = "http://maven.ic2.player.to/"
+        url = "https://maven.ic2.player.to/"
     }
 
+    // CraftTweaker2
     maven {
-        name "CraftTweaker2"
-        url "http://maven.blamejared.com/"
+        name = "CraftTweaker2"
+        url = "https://maven.blamejared.com/"
     }
 }
 
 dependencies {
-    compile files("libs/jei_1.12.2-4.16.1.1013.jar")
+    // 本地库依赖
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-
-    compile files('libs/forestry_1.12.2-5.8.2.425.jar') {
-    }
-
-
-    compile files("libs/Hwyla-1.8.26-B41_1.12.2.jar")
-
-    compile files("libs/TheOneProbe-CE-1.12-1.3.2.jar") {
-    }
-
-    compile files("libs/CraftTweaker2-API-1.12.2-4.1.20.702.jar")
-
-
+    // 或者显式声明（如果只需要特定文件）
+     implementation files(
+         "libs/jei_1.12.2-4.16.1.1013.jar",
+         "libs/forestry_1.12.2-5.8.2.425.jar",
+         "libs/Hwyla-1.8.26-B41_1.12.2.jar",
+         "libs/TheOneProbe-CE-1.12-1.3.2.jar",
+         "libs/CraftTweaker2-API-1.12.2-4.1.20.702.jar"
+     )
 }
 
-
+// Travis CI 构建配置
 allprojects {
     if (System.getenv("TRAVIS") != null) {
-        def tag = System.getenv("TRAVIS_TAG");
+        def tag = System.getenv("TRAVIS_TAG")
         if (tag != null && !tag.isEmpty() && tag.contains("release")) {
             project.ext.releaseType = "release"
         } else {
@@ -99,20 +91,16 @@ allprojects {
     }
 }
 
+// 资源处理
 processResources {
-    // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
 
-    // copy everything else except the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
