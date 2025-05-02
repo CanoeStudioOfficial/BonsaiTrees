@@ -41,7 +41,7 @@ configurations {
 minecraft {
     version = '1.12.2-14.23.5.2847'
     runDir = 'run'
-    mappings = 'stable_39'
+    mappings = 'snapshot_20171003'
     def args = []
     if (project.use_coremod.toBoolean()) {
         args << '-Dfml.coreMods.load=' + coremod_plugin_class_name
