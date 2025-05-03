@@ -1,5 +1,0 @@
-{
-  "conditions": {
-    "hopping_bonsai_enabled": "org.dave.bonsaitrees.misc.HoppingMustBeEnabledConditionFactory"
-  }
-}
