@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import org.dave.bonsaitrees.BonsaiTrees;
 import org.dave.bonsaitrees.base.IMetaBlockName;
 import org.dave.bonsaitrees.block.BlockBonsaiPot;
+import org.dave.bonsaitrees.bonsaitrees.Tags;
 import org.dave.bonsaitrees.init.Blockss;
 import org.dave.bonsaitrees.misc.ConfigurationHandler;
 import org.dave.bonsaitrees.render.PotColorizer;
@@ -58,10 +59,10 @@ public class ItemBlockPonsaiPot extends ItemBlock {
                 tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip.bonsaitrees.use_jei_for_compatible_sapling"));
             }
         } else {
-            tooltip.add(TextFormatting.GRAY + I18n.format("tooltip." + BonsaiTrees.MODID + ".hold_shift_hint"));
+            tooltip.add(TextFormatting.GRAY + I18n.format("tooltip." + Tags.MOD_ID + ".hold_shift_hint"));
 
             if(isHopping && ConfigurationHandler.GeneralSettings.disableHoppingBonsaiPot) {
-                tooltip.add(TextFormatting.RED + I18n.format("tooltip." + BonsaiTrees.MODID + ".warn_hopping_pots_disabled"));
+                tooltip.add(TextFormatting.RED + I18n.format("tooltip." + Tags.MOD_ID + ".warn_hopping_pots_disabled"));
             }
         }
     }

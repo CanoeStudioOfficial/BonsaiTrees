@@ -2,6 +2,7 @@ package org.dave.bonsaitrees.base;
 
 import net.minecraft.item.Item;
 import org.dave.bonsaitrees.BonsaiTrees;
+import org.dave.bonsaitrees.bonsaitrees.Tags;
 
 public class BaseItem extends Item {
     public BaseItem() {
@@ -10,8 +11,8 @@ public class BaseItem extends Item {
 
     @Override
     public Item setTranslationKey(String name) {
-        if (!name.startsWith(BonsaiTrees.MODID + ".")) {
-            name = BonsaiTrees.MODID + "." + name;
+        if (!name.startsWith(Tags.MOD_ID + ".")) {
+            name = Tags.MOD_ID + "." + name;
         }
         return super.setTranslationKey(name);
     }

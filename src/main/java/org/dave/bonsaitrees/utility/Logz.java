@@ -3,10 +3,11 @@ package org.dave.bonsaitrees.utility;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 import org.dave.bonsaitrees.BonsaiTrees;
+import org.dave.bonsaitrees.bonsaitrees.Tags;
 
 public class Logz {
     public static void log(Level logLevel, String fmt, Object... data) {
-        FMLLog.log(BonsaiTrees.MODID, logLevel, fmt, data);
+        FMLLog.log(Tags.MOD_ID, logLevel, fmt, data);
     }
 
     public static void all(String fmt, Object... data) {

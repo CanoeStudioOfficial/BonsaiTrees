@@ -7,6 +7,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.dave.bonsaitrees.BonsaiTrees;
 import org.dave.bonsaitrees.api.BonsaiDropChances;
+import org.dave.bonsaitrees.bonsaitrees.Tags;
 import org.dave.bonsaitrees.utility.Logz;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class ConfigurationHandler {
             return;
         }
 
-        configDir = new File(configFile.getParentFile(), BonsaiTrees.MODID);
+        configDir = new File(configFile.getParentFile(), Tags.MOD_ID);
         if (!configDir.exists()) {
             configDir.mkdirs();
         }
@@ -168,7 +169,7 @@ public class ConfigurationHandler {
 
     @SubscribeEvent
     public static void onConfigurationChanged(ConfigChangedEvent event) {
-        if(!event.getModID().equalsIgnoreCase(BonsaiTrees.MODID)) {
+        if(!event.getModID().equalsIgnoreCase(Tags.MOD_ID)) {
             return;
         }
 

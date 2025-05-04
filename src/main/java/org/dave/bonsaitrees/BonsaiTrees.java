@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import org.dave.bonsaitrees.bonsaitrees.Tags;
 import org.dave.bonsaitrees.command.CommandBonsaiTrees;
 import org.dave.bonsaitrees.integration.IntegrationRegistry;
 import org.dave.bonsaitrees.misc.ConfigurationHandler;
@@ -24,17 +25,18 @@ import org.dave.bonsaitrees.utility.Logz;
 
 
 @Mod(
-        modid = BonsaiTrees.MODID,
-        version = BonsaiTrees.VERSION,
+        modid = Tags.MOD_ID,
+        version = Tags.VERSION,
         guiFactory = BonsaiTrees.GUI_FACTORY,
         acceptedMinecraftVersions = "[1.12,1.13)"
 )
 public class BonsaiTrees {
-    public static final String MODID = "bonsaitrees";
-    public static final String VERSION = "1.1.4";
+
+
+
     public static final String GUI_FACTORY = "org.dave.bonsaitrees.misc.ConfigGuiFactory";
 
-    @Mod.Instance(BonsaiTrees.MODID)
+    @Mod.Instance(Tags.MOD_ID)
     public static BonsaiTrees instance;
 
     @SidedProxy(clientSide = "org.dave.bonsaitrees.proxy.ClientProxy", serverSide = "org.dave.bonsaitrees.proxy.ServerProxy")

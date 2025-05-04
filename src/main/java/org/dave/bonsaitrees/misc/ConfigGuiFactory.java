@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.client.IModGuiFactory;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import org.dave.bonsaitrees.BonsaiTrees;
+import org.dave.bonsaitrees.bonsaitrees.Tags;
 
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
 
     public class ConfigScreen extends GuiConfig {
         public ConfigScreen(GuiScreen parentScreen) {
-            super(parentScreen, ConfigurationHandler.getConfigElements(), BonsaiTrees.MODID, false, false, "Colored Tooltips");
+            super(parentScreen, ConfigurationHandler.getConfigElements(), Tags.MOD_ID, false, false, "Colored Tooltips");
         }
     }
 }

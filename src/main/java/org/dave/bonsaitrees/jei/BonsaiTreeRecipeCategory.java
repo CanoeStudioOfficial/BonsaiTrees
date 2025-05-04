@@ -9,9 +9,10 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import org.dave.bonsaitrees.BonsaiTrees;
+import org.dave.bonsaitrees.bonsaitrees.Tags;
 
 public class BonsaiTreeRecipeCategory implements IRecipeCategory<BonsaiTreeRecipeWrapper> {
-    public static final String UID = BonsaiTrees.MODID + ".Growing";
+    public static final String UID = Tags.MOD_ID + ".Growing";
     private final String localizedName;
     private final IDrawableStatic background;
     private final IDrawableStatic slotDrawable;

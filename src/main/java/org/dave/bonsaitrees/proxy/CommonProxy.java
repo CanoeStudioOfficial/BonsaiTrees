@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import org.dave.bonsaitrees.BonsaiTrees;
 import org.dave.bonsaitrees.block.BlockBonsaiPot;
+import org.dave.bonsaitrees.bonsaitrees.Tags;
 import org.dave.bonsaitrees.compat.CompatHandler;
 import org.dave.bonsaitrees.init.Blockss;
 import org.dave.bonsaitrees.init.Triggerss;
@@ -29,7 +30,7 @@ import java.lang.reflect.Method;
 public class CommonProxy {
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        event.getRegistry().register(new BlockBonsaiPot(Material.CLAY).setTranslationKey("bonsaipot").setRegistryName(BonsaiTrees.MODID, "bonsaipot"));
+        event.getRegistry().register(new BlockBonsaiPot(Material.CLAY).setTranslationKey("bonsaipot").setRegistryName(Tags.MOD_ID, "bonsaipot"));
         GameRegistry.registerTileEntity(TileBonsaiPot.class, "TileBonsaiPot");
     }
 
