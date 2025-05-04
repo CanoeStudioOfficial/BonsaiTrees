@@ -33,13 +33,12 @@ public class ItemBlockPonsaiPot extends ItemBlock {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        String superName = super.getUnlocalizedName(stack);
+    public String getTranslationKey(ItemStack stack) {
+        String superName = super.getTranslationKey(stack);
         String specialName = ((IMetaBlockName)this.block).getSpecialName(stack);
         if(specialName.length() > 0) {
             return superName + "." + specialName;
         }
-
         return superName;
     }
 
@@ -51,7 +50,7 @@ public class ItemBlockPonsaiPot extends ItemBlock {
         if(GuiScreen.isShiftKeyDown()) {
             if(stack.hasTagCompound() && stack.getTagCompound().hasKey("color")) {
                 EnumDyeColor color = EnumDyeColor.byMetadata(stack.getTagCompound().getInteger("color"));
-                tooltip.add(PotColorizer.textFormattingForDye(color) + I18n.format("item.fireworksCharge." + color.getUnlocalizedName()));
+                tooltip.add(PotColorizer.textFormattingForDye(color) + I18n.format("item.fireworksCharge." + color.getName()));
             }
             if(isHopping) {
                 tooltip.add(TextFormatting.YELLOW + I18n.format("tooltip.bonsaitrees.autoexport"));

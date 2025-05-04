@@ -9,10 +9,10 @@ public class BaseItem extends Item {
     }
 
     @Override
-    public Item setUnlocalizedName(String name) {
+    public Item setTranslationKey(String name) {
         if (!name.startsWith(BonsaiTrees.MODID + ".")) {
             name = BonsaiTrees.MODID + "." + name;
         }
-        return super.setUnlocalizedName(name);
+        return super.setTranslationKey(name);
     }
 }

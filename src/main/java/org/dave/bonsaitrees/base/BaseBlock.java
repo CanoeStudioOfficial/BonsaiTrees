@@ -14,10 +14,10 @@ public class BaseBlock extends Block {
     }
 
     @Override
-    public Block setUnlocalizedName(String name) {
+    public Block setTranslationKey(String name) {
         if(!name.startsWith(BonsaiTrees.MODID + ".")) {
             name = BonsaiTrees.MODID + "." + name;
         }
-        return super.setUnlocalizedName(name);
+        return super.setTranslationKey(name);
     }
 }

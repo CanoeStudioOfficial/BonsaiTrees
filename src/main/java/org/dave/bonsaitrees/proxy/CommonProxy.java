@@ -29,7 +29,7 @@ import java.lang.reflect.Method;
 public class CommonProxy {
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        event.getRegistry().register(new BlockBonsaiPot(Material.CLAY).setUnlocalizedName("bonsaipot").setRegistryName(BonsaiTrees.MODID, "bonsaipot"));
+        event.getRegistry().register(new BlockBonsaiPot(Material.CLAY).setTranslationKey("bonsaipot").setRegistryName(BonsaiTrees.MODID, "bonsaipot"));
         GameRegistry.registerTileEntity(TileBonsaiPot.class, "TileBonsaiPot");
     }
 
